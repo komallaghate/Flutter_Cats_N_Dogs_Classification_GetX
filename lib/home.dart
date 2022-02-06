@@ -34,7 +34,6 @@ class _HomeState extends State<Home> {
   captureImagePhoneCamera() async {
     var image = await picker.pickImage(source: ImageSource.camera);
     if (image == null) return null;
-
     setState(() {
       _image = File(image.path);
     });
@@ -52,7 +51,7 @@ class _HomeState extends State<Home> {
 
   loadModel() async {
     await Tflite.loadModel(
-        model: 'assets/model_unquant.tflite', labels: 'aeets/labels.txt');
+        model: 'assets/model_unquant.tflite', labels: 'assets/labels.txt');
   }
 
   @override
@@ -66,96 +65,106 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.teal,
-        body: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 10.0),
-                  const Center(
-                    child: Text(
-                      'Cats & Dogs Detector Application GetX',
-                      style: TextStyle(
-                          color: Colors.deepPurple,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25.0),
+    return SafeArea(
+      child: Scaffold(
+          backgroundColor: Colors.teal.withOpacity(0.9),
+          body: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const SizedBox(height: 50.0),
+                    const Center(
+                      child: Text(
+                        'Cats & Dogs Detector App',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25.0),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 50.0),
-                  Center(
-                    child: _loading
-                        ? Container(
-                            width: 350.0,
-                            child: Column(children: <Widget>[
-                              Image.asset(
-                                  'assets/image_Cat_dog_Background.jpg'),
-                              const SizedBox(height: 47.0),
-                            ]))
-                        : Container(
-                            child: Column(
-                            children: <Widget>[
-                              Container(
-                                height: 280.0,
-                                child: Image.file(_image),
-                              ),
-                              const SizedBox(height: 22.0),
-                              _output != null
-                                  ? Text('${_output[0]['label']}',
-                                      style: const TextStyle(
-                                        color: Colors.deepPurple,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25.0,
-                                      ))
-                                  : Container(),
-                              const SizedBox(height: 22.0),
-                            ],
-                          )),
-                  ),
-                  Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        children: <Widget>[
-                          GestureDetector(
-                              onTap: () {
-                                captureImagePhoneCamera();
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width - 250,
-                                alignment: Alignment.center,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10.0, vertical: 15.0),
-                                decoration: BoxDecoration(
-                                    color: Colors.pink,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: const Text(
-                                  'Camera',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16.0),
+                    const SizedBox(height: 50.0),
+                    Center(
+                      child: _loading
+                          ? Container(
+                              width: 350.0,
+                              child: Column(children: <Widget>[
+                                Image.asset(
+                                    'assets/image_Cat_dog_Background.jpg'),
+                                const SizedBox(height: 47.0),
+                              ]))
+                          : Container(
+                              child: Column(
+                              children: <Widget>[
+                                Container(
+                                  height: 280.0,
+                                  child: Image.file(_image),
                                 ),
-                              )),
-                          const SizedBox(height: 5.0),
-                          GestureDetector(
-                              onTap: () {
-                                pickGalleryImage();
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width - 250,
-                                alignment: Alignment.center,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10.0, vertical: 15.0),
-                                decoration: BoxDecoration(
-                                    color: Colors.pink,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: const Text(
-                                  'Gallery',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16.0),
-                                ),
-                              )),
-                        ],
-                      ))
-                ])));
+                                const SizedBox(height: 22.0),
+                                _output != null
+                                    ? Text('${_output[0]['label']}',
+                                        style: const TextStyle(
+                                          color: Colors.deepPurple,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25.0,
+                                        ))
+                                    : Container(),
+                                const SizedBox(height: 22.0),
+                              ],
+                            )),
+                    ),
+                    Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          children: <Widget>[
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text('Choose an image to detect from:'),
+                            ),
+                            GestureDetector(
+                                onTap: () {
+                                  captureImagePhoneCamera();
+                                },
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width - 250,
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0, vertical: 15.0),
+                                  decoration: BoxDecoration(
+                                      color: Colors.pink,
+                                      borderRadius:
+                                          BorderRadius.circular(20.0)),
+                                  child: const Text(
+                                    'Camera',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16.0),
+                                  ),
+                                )),
+                            const SizedBox(height: 5.0),
+                            GestureDetector(
+                                onTap: () {
+                                  pickGalleryImage();
+                                },
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width - 250,
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0, vertical: 15.0),
+                                  decoration: BoxDecoration(
+                                      color: Colors.pink,
+                                      borderRadius:
+                                          BorderRadius.circular(20.0)),
+                                  child: const Text(
+                                    'Gallery',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16.0),
+                                  ),
+                                )),
+                          ],
+                        ))
+                  ]))),
+    );
   }
 }
